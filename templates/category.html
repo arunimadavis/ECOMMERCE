@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{category.desc|truncatewords:155}}
+    {% else %}
+        welcome to ARMANI store, where you can buy with more offers
+    {% endif %}
+{% endblock %}
+
+
+{% block title %}
+    {% if category %}
+        {{category.name}} -ARMANI STORE
+    {% else %}
+        See more trending collections
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if category %}
+<div>
+    <div class="row my_row_class">
+        <div class="mx-auto">
+            <p>
+                <a href="{% url 'ecommerceapp:allproducts' %}">OUR NEW WINTER COLLECTIONS</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="mx-auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.desc}}</p>
+</div>
+<div class="container">
+            <div class="row mx_auto">
+                {% for product in category.product_set.all  %}
+                    <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4"><br>
+                        <div class="card text-center " style="min-width:18rem;">
+                            <a href="{{product.get_url}}">
+                                <img class="card-img-top " style="width:200px;height:200px;" src="{{product.image.url}}" alt="{{product.name}}">
+                                <div class="card-body ">
+                                    <h4>{{product.name}}</h4>
+                                    <h4>{{product.price}}</h4>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+</div>
+{% else %}
+<div>
+<img class="my_image my_image_padding" src="{% static 'img/banners.jpg' %}" alt="our  collections">
+    </div>
+<br>
+<div>
+    <h2 class="text-center my_title">our  collections</h2>
+    <p class="text-justify">
+        Get updates, special promotions and style news.
+        Cool.
+    </p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4"><br>
+            <div class="card text-center " style="min-width:18rem;">
+                <a href="{{product.get_url}}">
+                    <img class="card-img-top " style="width:300px;height:400px;" src="{{product.image.url}}" alt="{{product.name}}"  >
+                    <div class="card-body ">
+                        <h4>{{product.name}}</h4>
+                        <h4>{{product.price}}</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}"  class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">
+                {{pg}}
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
+
+
+
+

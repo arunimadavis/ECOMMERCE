@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+{{product.desc|truncatewords:155}}
+{% endblock %}
+{% block title %}
+{% if product.category %}
+        {{product.name}} -ARMANI STORE
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row my_prod_row_class">
+    <div class="mx-auto">
+       <p><a href="{% url 'ecommerceapp:allproducts' %}">Home</a>| <a href="{{product.category.get_url}}">
+           {{product.category}}
+       </a>|{{product.name}}</p>
+
+    </div>
+</div>
+<div class="container">
+<br>
+    <div class="row">
+        <div class="col-12 col-sm-12-col-md-12 col-lg-6 text-center">
+            <div style="min-width :18rem;">
+                <img src="{{product.image.url}}" style="width:200px;height:200;" alt="{{product.name}}">
+            </div>
+        </div>
+
+            <div class="col-12 col-sm-12-col-md-12 col-lg-6 ">
+                <div>
+                <h3 class="my_prod_title">{{product.name}}</h3>
+                <p><h4>${{product.price}}</h4></p>
+                <p class="my_title">Product Details</p>
+                <p class="text-justify my_prod_text" ><h5>{{product.desc}}</h5></p>
+                    {% if product.stock <= 0 %}
+                    <p class="text-justify my_prod_text"><b>Out Of Stock</b></p>
+                    {% else %}
+                    <a class="btn btn-danger" href="{% url 'cartapp:add_cart' product.id %}">Add To Cart</a>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

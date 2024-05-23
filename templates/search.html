@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    Explore our search results to find relevant information and discover a wide range of topics.
+    Our search page helps you quickly locate articles, products, and resources tailored to your interests.
+    Start your search now and uncover valuable content at your fingertips
+{% endblock %}
+{% block title %}
+    SEARCH
+{% endblock %}
+{% block content %}
+<div>
+    <p class="text-center my_text_search">Your Search for <b>"{{query}}"</b></p>
+</div>
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4"><br>
+            <div class="card text-center " style="min-width:18rem;">
+                <a href="{{product.get_url}}">
+                    <img class="card-img-top "  src="{{product.image.url}}" alt="{{product.name}}"  >
+                    <div class="card-body ">
+                        <h4>{{product.name}}</h4>
+                        <h4>{{product.price}}</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+            <div class="row mx_auto">
+                 <p class="text-center my_text_search">No Results Found</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

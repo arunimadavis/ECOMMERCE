@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    Review and manage items in your shopping cart. Check out securely and complete your online purchase.
+    Explore the latest products and enjoy a seamless shopping experience at ARMANI STORE.
+{% endblock %}
+{% block title %}
+    Cart--- ARMANI STORE
+{% endblock %}
+{% block content %}
+{% if not cart_items %}
+<div class="text-center"><br>
+    <h3 class="text-center my_title"><b>YOUR SHOPPING CART IS EMPTY</b></h3><br>
+    <p class="text-center">Please select <a href="{% url 'ecommerceapp:allproducts' %}">here</a> to continue shopping</p>
+</div>
+{% else %}
+
+<div class="text-center"><br>
+    <h3 class="text-center my_title"><b>YOUR SHOPPING CART </b></h3><br>
+</div>
+
+<div class="container">
+    <div class="row ">
+        <div class="col-md-6  text-center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thead">
+                <tr>
+                    <th colspan="5">
+                        YOUR ITEMS
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cart_item in cart_items %}
+                <tr>
+                    <td>
+                        <a href="{{cart_item.product.get_absolute_url}}"><img src="{{cart_item.product.image.url}}" style="width:100px;height:150px;"  alt="{{ cart_item.product.name }}" class="float-left rounded custom_image"></a>
+                    </td>
+                    <td class="text-left">
+                        {{cart_item.product.name}}<br>
+                        SKU: {{cart_item.product.id}}<br>
+                        AMOUNT : $ {{cart_item.product.price}}<br>
+                        Qty :{{cart_item.quantity}} x $ {{ cart_item.product.price }}
+                    </td>
+                    <td>
+                        $ {{cart_item.sub_total}}
+                    </td>
+                    {% if cart_item.quantity < cart_item.product.stock %}
+                    <td>
+                        &nbsp;<a href="{% url 'cartapp:add_cart' cart_item.product.id %}" class="custom_a"><i class="fa fa-plus custom_icon" ></i></a>&nbsp;
+                        &nbsp;<a href="{% url 'cartapp:cart_remove' cart_item.product.id %}" class="custom_a"><i class="fa fa-minus custom_icon" ></i></a>&nbsp;
+                        &nbsp;<a href="{% url 'cartapp:full_remove' cart_item.product.id %}" class="custom_icon"><i class="fa fa-trash custom_icon" ></i></a>
+                    </td>
+                    {% else %}
+                    <td>
+                        &nbsp;<a href="{% url 'cartapp:cart_remove' cart_item.product.id %}" class="custom_a"><i class="fa fa-minus custom_icon" ></i></a>
+                        &nbsp;<a href="{% url 'cartapp:full_remove' cart_item.product.id %}" class="custom_icon"><i class="fa fa-trash custom_icon" ></i></a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 text-center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thead">
+            <tr>
+                <th>
+                    CHECKOUT
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    please review the cart items before proceeding the order
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left">
+                    YOUR TOTAL - <strong>{{ total }}</strong>
+
+                </td>
+            </tr>
+            </tbody>
+            </table>
+            <div class="mx-auto">
+                <a href="{% url 'ecommerceapp:allproducts' %}" class="btn btn-warning btn-block my_custom_button">
+                    Continue Shopping
+                </a>
+            </div>
+            <div class="mx-auto">
+                <a href="{% url 'ecommerceapp:allproducts' %}" class="btn btn-success btn-block my_custom_button">
+                    Make Payment
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
